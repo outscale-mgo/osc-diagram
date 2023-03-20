@@ -9,7 +9,7 @@ def get_long_description():
 
 def get_version():
     root_path = os.path.dirname(os.path.abspath(__file__))
-    with open(os.path.join(root_path, 'osc-diagram', 'VERSION'), 'r') as fd:
+    with open(os.path.join(root_path, 'osc_diagram', 'VERSION'), 'r') as fd:
         return fd.read().strip()
 
 setuptools.setup(
@@ -23,13 +23,14 @@ setuptools.setup(
     include_package_data=True,
     url="https://github.com/outscale/osc-diagram",
     packages=setuptools.find_packages(),
+    entry_points={"console_scripts": ["osc-diagram = osc_diagram.main:main"]},
     classifiers=[
         "Programming Language :: Python :: 3",
         "License :: OSI Approved :: BSD License",
         "Operating System :: OS Independent",
     ],
     install_requires=[
-        'pyperclip>=3.7.0',
+        'apache-libcloud>=3.7.0',
         'diagrams>=0.23.3'
     ]
 )
