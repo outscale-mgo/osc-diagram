@@ -1,3 +1,6 @@
+
+[![Project Sandbox](https://docs.outscale.com/fr/userguide/_images/Project-Sandbox-yellow.svg)](https://docs.outscale.com/en/userguide/Open-Source-Projects.html)
+
 # Outscale Diagram
 
 This project serve as examples for libcloud/diagram, and as a lib to show diagrams of your cloud.
