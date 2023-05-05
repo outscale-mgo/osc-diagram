@@ -26,16 +26,25 @@ def main(ak=key, sk=secret, format=["png", "dot"], region=region, service=servic
 
     with Diagram("All Vms", outformat=format, direction="BT"):
         for n in nodes:
-            vm = Compute(n.name)
-            with Cluster("SG:\n" + n.name + '\n' + n.extra['VmId']):
+            nname = n.name
+            if len(nname) > 16:
+                nname=nname[:16] + "..."
+            vm = Compute(nname)
+            with Cluster("SG:\n" + nname + '\n' + n.extra['VmId']):
                 sgs_cluster = []
                 for sg in  n.extra['SecurityGroups']:
-                    sgs_cluster.append(IdentityAndAccessManagement(sg["SecurityGroupName"]))
+                    sg_name = sg["SecurityGroupName"]
+                    if len(sg_name) > 16:
+                        sg_name=sg_name[:16] + "..."
+                    sgs_cluster.append(IdentityAndAccessManagement(sg_name))
                     
-            with Cluster("Devs:\n" + n.name + '\n' + n.extra['VmId']):
+            with Cluster("Devs:\n" + nname + '\n' + n.extra['VmId']):
                 bd_cluster = []
                 for bd in  n.extra['BlockDeviceMappings']:
-                    bd_cluster.append(Storage(bd["DeviceName"] + "\n" + bd["Bsu"]["VolumeId"]))
+                    dev_name = bd["DeviceName"]
+                    if len(dev_name) > 16:
+                        dev_name=dev_name[:16] + "..."
+                    bd_cluster.append(Storage(dev_name + "\n" + bd["Bsu"]["VolumeId"]))
             vm >> sgs_cluster
             vm >> bd_cluster
 
