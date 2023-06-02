@@ -18,6 +18,11 @@ except:
 region = "eu-west-2"
 service = "api"
 
+def sn(str):
+    if len(str) > 16:
+        return str[:14] + "..."
+    return str
+
 def main(ak=key, sk=secret, format=["png", "dot"], region=region, service=service):
     Driver = get_driver(Provider.OUTSCALE)
     driver = Driver(key=ak, secret=sk, region=region, service=service)
@@ -27,26 +32,22 @@ def main(ak=key, sk=secret, format=["png", "dot"], region=region, service=servic
     with Diagram("All Vms", outformat=format, direction="BT"):
         for n in nodes:
             nname = n.name
-            if len(nname) > 16:
-                nname=nname[:16] + "..."
-            vm = Compute(nname)
-            with Cluster("SG:\n" + nname + '\n' + n.extra['VmId']):
+            nextra = n.extra
+            ip = nextra['PublicIp'] if 'PublicIp' in nextra else ""
+            vm = Compute(sn(nname) + '\n`' + ip)
+            with Cluster("SG:\n" + nname + '\n' + nextra['VmId']):
                 sgs_cluster = []
-                if 'SecurityGroups' in n.extra:
-                    for sg in  n.extra['SecurityGroups']:
+                if 'SecurityGroups' in nextra:
+                    for sg in  nextra['SecurityGroups']:
                         sg_name = sg["SecurityGroupName"]
-                        if len(sg_name) > 16:
-                            sg_name=sg_name[:16] + "..."
-                        sgs_cluster.append(IdentityAndAccessManagement(sg_name))
+                        sgs_cluster.append(IdentityAndAccessManagement(sn(sg_name)))
                     
-            with Cluster("Devs:\n" + nname + '\n' + n.extra['VmId']):
+            with Cluster("Devs:\n" + nname + '\n' + nextra['VmId']):
                 bd_cluster = []
-                if 'BlockDeviceMappings' in n.extra:
-                    for bd in  n.extra['BlockDeviceMappings']:
+                if 'BlockDeviceMappings' in nextra:
+                    for bd in  nextra['BlockDeviceMappings']:
                         dev_name = bd["DeviceName"]
-                        if len(dev_name) > 16:
-                            dev_name=dev_name[:16] + "..."
-                        bd_cluster.append(Storage(dev_name + "\n" + bd["Bsu"]["VolumeId"]))
+                        bd_cluster.append(Storage(sn(dev_name) + "\n" + bd["Bsu"]["VolumeId"]))
             vm >> sgs_cluster
             vm >> bd_cluster
 
