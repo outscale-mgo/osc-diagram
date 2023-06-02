@@ -32,19 +32,21 @@ def main(ak=key, sk=secret, format=["png", "dot"], region=region, service=servic
             vm = Compute(nname)
             with Cluster("SG:\n" + nname + '\n' + n.extra['VmId']):
                 sgs_cluster = []
-                for sg in  n.extra['SecurityGroups']:
-                    sg_name = sg["SecurityGroupName"]
-                    if len(sg_name) > 16:
-                        sg_name=sg_name[:16] + "..."
-                    sgs_cluster.append(IdentityAndAccessManagement(sg_name))
+                if 'SecurityGroups' in n.extra:
+                    for sg in  n.extra['SecurityGroups']:
+                        sg_name = sg["SecurityGroupName"]
+                        if len(sg_name) > 16:
+                            sg_name=sg_name[:16] + "..."
+                        sgs_cluster.append(IdentityAndAccessManagement(sg_name))
                     
             with Cluster("Devs:\n" + nname + '\n' + n.extra['VmId']):
                 bd_cluster = []
-                for bd in  n.extra['BlockDeviceMappings']:
-                    dev_name = bd["DeviceName"]
-                    if len(dev_name) > 16:
-                        dev_name=dev_name[:16] + "..."
-                    bd_cluster.append(Storage(dev_name + "\n" + bd["Bsu"]["VolumeId"]))
+                if 'BlockDeviceMappings' in n.extra:
+                    for bd in  n.extra['BlockDeviceMappings']:
+                        dev_name = bd["DeviceName"]
+                        if len(dev_name) > 16:
+                            dev_name=dev_name[:16] + "..."
+                        bd_cluster.append(Storage(dev_name + "\n" + bd["Bsu"]["VolumeId"]))
             vm >> sgs_cluster
             vm >> bd_cluster
 
