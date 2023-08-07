@@ -1,2 +1,2 @@
-apache-libcloud=3.7.0
+osc-sdk-python==0.24.0
 diagrams=0.23.3

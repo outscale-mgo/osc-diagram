@@ -3,7 +3,7 @@
 
 # Outscale Diagram
 
-This project serve as examples for libcloud/diagram, and as a lib to show diagrams of your cloud.
+This project serve as examples for diagram, and as a lib to show diagrams of your cloud.
 
 ## usage
 just call

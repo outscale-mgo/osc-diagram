@@ -30,7 +30,7 @@ setuptools.setup(
         "Operating System :: OS Independent",
     ],
     install_requires=[
-        'apache-libcloud>=3.7.0',
+        "osc-sdk-python>=0.22.0",
         'diagrams>=0.23.3'
     ]
 )
