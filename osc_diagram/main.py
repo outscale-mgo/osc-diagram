@@ -23,7 +23,7 @@ def sn(str):
     return str
 
 def main(ak=key, sk=secret, format=["png", "dot"], region=region, service=service):
-    driver = osc_sdk_python.Gateway(key=ak, secret=sk, region=region)
+    driver = osc_sdk_python.Gateway(access_key=ak, secret_key=sk, region=region)
 
     nodes = driver.ReadVms()["Vms"]
 
