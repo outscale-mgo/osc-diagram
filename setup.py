@@ -21,7 +21,7 @@ setuptools.setup(
     long_description=get_long_description(),
     long_description_content_type="text/markdown",
     include_package_data=True,
-    url="https://github.com/outscale/osc-diagram",
+    url="https://github.com/outscale-mgo/osc-diagram",
     packages=setuptools.find_packages(),
     entry_points={"console_scripts": ["osc-diagram = osc_diagram.main:main"]},
     classifiers=[
